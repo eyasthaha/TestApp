@@ -11,33 +11,39 @@ class EmployeeService {
     {
         
         // Logic to retrieve all employees
-        return Employees::get();
+        return Employees::with('languages')->get();
 
     }
     
     public function create(array $data)
     {
-        // Logic to retrieve all employees
-        
-        foreach ($data['languages_known'] as $language) {
             
-            Employees::create([
-                'first_name' => $data['first_name'],
-                'last_name' => $data['last_name'],
-                'willing_to_work' => $data['willing_to_work'],
-                'languages_known' => $language,
-            ]);
+        $employee = Employees::create([
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
+            'willing_to_work' => $data['willing_to_work'],
+        ]);
 
-        }
+        $employee->languages()->attach($data['languages_known']);
 
-        return true;
+        return $employee;
 
     }
 
     public function update(array $data, string $id)
     {
         // Logic to update an employee by ID
-        return Employees::where('id', $id)->update($data);
+        $employee = Employees::find($id);
+
+        $employee->update([
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
+            'willing_to_work' => $data['willing_to_work'],
+        ]);
+
+        $employee->languages()->sync($data['languages_known']);
+
+        return $employee;
 
     }
 

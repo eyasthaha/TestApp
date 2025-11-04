@@ -55,7 +55,7 @@ class EmployeesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $this->employeeService->update($request->all(), $id);
+        $this->employeeService->update($request->toArray(), $id);
 
         return response()->json(['message' => 'Employee updated successfully']);
     }

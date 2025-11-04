@@ -17,7 +17,7 @@ class Employees extends Model
         'first_name',
         'last_name',
         'willing_to_work',
-        'languages_known',
+        // 'languages_known',
     ];
 
     protected function fullName(): Attribute
@@ -27,7 +27,23 @@ class Employees extends Model
         );
     }
 
+    // Capitalize First Name
+    protected function firstName(): Attribute
+    {
+        return Attribute::make(
+            set: fn ($value) => ucfirst(strtolower($value)),
+        );
+    }
+
+    // Capitalize Last Name
+    protected function lastName(): Attribute
+    {
+        return Attribute::make(
+            set: fn ($value) => ucfirst(strtolower($value)),
+        );
+    }
+
     public function languages(){
-        return $this->belongsToMany(Languages::class, 'id', 'languages_known');
+        return $this->belongsToMany(Languages::class, 'employee_languages', 'employee_id', 'language_id')->withTimestamps();
     }
 }

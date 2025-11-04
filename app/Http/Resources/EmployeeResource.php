@@ -19,7 +19,7 @@ class EmployeeResource extends JsonResource
             'name' => $this->full_name,
             // 'last_name' => $this->last_name,
             'willing_to_work' => $this->willing_to_work == true ? 'Yes' : 'No',
-            'languages_known' => $this->languages_known,
+            'languages_known' => $this->languages->pluck('name')->join(', '),
         ];
     }
 }
